@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 namespace Restaurante.Servicos.Api.Controllers
 {
     [Route("[controller]")]
+    [ApiController]
     public class PratoController : ControllerBase<Prato, PratoDTO>
     {
 

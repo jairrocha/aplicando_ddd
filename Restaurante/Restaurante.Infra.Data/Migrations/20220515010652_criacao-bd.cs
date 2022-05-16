@@ -2,12 +2,12 @@
 
 namespace Restaurante.Infra.Data.Migrations
 {
-    public partial class firstcommit : Migration
+    public partial class criacaobd : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "prato",
+                name: "Tb_Prato",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
@@ -17,14 +17,14 @@ namespace Restaurante.Infra.Data.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_prato", x => x.Id);
+                    table.PrimaryKey("PK_Tb_Prato", x => x.Id);
                 });
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "prato");
+                name: "Tb_Prato");
         }
     }
 }

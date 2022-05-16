@@ -14,7 +14,7 @@ namespace Restaurante.Infra.Data.Mapeamentos
         public override void Configure(EntityTypeBuilder<Prato> builder)
         {
             base.Configure(builder);
-            builder.ToTable("prato");
+            builder.ToTable("Tb_Prato");
 
             builder.Property(c => c.Nome).IsRequired().HasColumnName("Nome").HasMaxLength(100);
             builder.Property(c => c.Preco).IsRequired().HasColumnName("Preco");

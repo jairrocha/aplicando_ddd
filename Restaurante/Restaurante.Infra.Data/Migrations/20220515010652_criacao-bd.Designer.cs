@@ -9,8 +9,8 @@ using Restaurante.Infra.Data.Contextos;
 namespace Restaurante.Infra.Data.Migrations
 {
     [DbContext(typeof(Contexto))]
-    [Migration("20220512234115_first-commit")]
-    partial class firstcommit
+    [Migration("20220515010652_criacao-bd")]
+    partial class criacaobd
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -40,7 +40,7 @@ namespace Restaurante.Infra.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("prato");
+                    b.ToTable("Tb_Prato");
                 });
 #pragma warning restore 612, 618
         }

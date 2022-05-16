@@ -83,5 +83,6 @@ namespace Restaurante.Infra.Data.Contextos
 
             modelBuilder.ApplyConfiguration(new PratoMap());
         }
+
     }
 }

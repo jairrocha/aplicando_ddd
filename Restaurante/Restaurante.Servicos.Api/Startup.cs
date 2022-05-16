@@ -35,8 +35,8 @@ namespace Restaurante.Servicos.Api
                    o.UseSqlServer(Configuration.GetConnectionString("Default")));
 
             services.AddControllers();
-            
 
+         
             InjetorDependencias.Registrar(services);
             services.AddAutoMapper(x => x.AddProfile(new MappingEntidade()));
             

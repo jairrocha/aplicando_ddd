@@ -38,7 +38,7 @@ namespace Restaurante.Infra.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("prato");
+                    b.ToTable("Tb_Prato");
                 });
 #pragma warning restore 612, 618
         }

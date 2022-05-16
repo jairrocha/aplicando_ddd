@@ -2,6 +2,7 @@
 using Restaurante.Aplicacao.DTO;
 using Restaurante.Aplicacao.Interfaces;
 using Restaurante.Dominio.Entidades;
+using Restaurante.Infra.Data.Exceptions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,6 +14,7 @@ namespace Restaurante.Servicos.Api.Controllers
 
     [Produces("application/json")]
     [Route("api/[controller]")]
+    [ApiController]
     public class ControllerBase<Entidade, EntidadeDTO> : Controller
         where Entidade : EntidadeBase
         where EntidadeDTO : DTOBase
@@ -31,8 +33,8 @@ namespace Restaurante.Servicos.Api.Controllers
         {
             try
             {
-                var restaurantes = app.SelecionarTodos();
-                return new OkObjectResult(restaurantes);
+                var result = app.SelecionarTodos();
+                return new OkObjectResult(result);
             }
             catch (Exception ex)
             {
@@ -47,6 +49,14 @@ namespace Restaurante.Servicos.Api.Controllers
         {
             try
             {
+
+                var result = app.SelecionarPorId(id);
+
+                if (result == null)
+                {
+                    return NotFound();
+                }
+
                 return new OkObjectResult(app.SelecionarPorId(id));
             }
             catch (Exception ex)
@@ -61,7 +71,19 @@ namespace Restaurante.Servicos.Api.Controllers
         {
             try
             {
-                return new OkObjectResult(app.Incluir(dado));
+                int id = app.Incluir(dado);
+                return CreatedAtAction(nameof(Incluir), new { Id = id }, dado);
+
+                /*
+                 * Utilize na controller o atributo: [ApiController] evitar o If abaixo.
+                 * ref.:https://docs.microsoft.com/en-us/aspnet/core/web-api/?view=aspnetcore-2.2#annotation-with-apicontroller-attribute
+                 * 
+                if (ModelState.IsValid)
+                    return CreatedAtAction(nameof(Incluir), new { Id = id }, dado);
+                else
+                    return BadRequest(ModelState);
+                */
+
             }
             catch (Exception ex)
             {
@@ -75,12 +97,18 @@ namespace Restaurante.Servicos.Api.Controllers
         {
             try
             {
+                
                 app.Alterar(dado);
-                return new OkObjectResult(true);
+                return new NoContentResult();
+                
+            }
+            catch(EntityNotFoundException)
+            {
+                return NotFound();
             }
             catch (Exception ex)
             {
-
+          
                 return BadRequest(ex.Message);
             }
         }
@@ -92,7 +120,11 @@ namespace Restaurante.Servicos.Api.Controllers
             try
             {
                 app.Excluir(id);
-                return new OkObjectResult(true);
+                return new NoContentResult();
+            }
+            catch (EntityNotFoundException)
+            {
+                return NotFound();
             }
             catch (Exception ex)
             {
@@ -101,6 +133,25 @@ namespace Restaurante.Servicos.Api.Controllers
             }
         }
 
-        
+        [HttpDelete]
+        public IActionResult Excluir([FromBody] EntidadeDTO dado)
+        {
+            try
+            {
+                app.Excluir(dado);
+                return new NoContentResult();
+            }
+            catch (EntityNotFoundException)
+            {
+                return NotFound();
+            }
+            catch (Exception ex)
+            {
+
+                return BadRequest(ex.Message);
+            }
+        }
+
+
     }
 }
