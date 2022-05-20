@@ -10,5 +10,6 @@ namespace Restaurante.Aplicacao.Interfaces
 {
     public interface IPratoApp : IAppBase<Prato, PratoDTO>
     {
+        IEnumerable<PratoDTO> SelecionarPorNome(string nome);
     }
 }

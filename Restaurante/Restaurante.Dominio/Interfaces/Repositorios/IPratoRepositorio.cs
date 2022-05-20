@@ -9,5 +9,6 @@ namespace Restaurante.Dominio.Interfaces.Repositorios
 {
     public interface IPratoRepositorio : IRepositorioBase<Prato>
     {
+        IEnumerable<Prato> SelecionarPorNome(string nome);
     }
 }

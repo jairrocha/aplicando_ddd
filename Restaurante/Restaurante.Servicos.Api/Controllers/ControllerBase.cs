@@ -20,11 +20,11 @@ namespace Restaurante.Servicos.Api.Controllers
         where EntidadeDTO : DTOBase
     {
 
-        readonly protected IAppBase<Entidade, EntidadeDTO> app;
+        private readonly IAppBase<Entidade, EntidadeDTO> _app;
 
         public ControllerBase(IAppBase<Entidade, EntidadeDTO> app)
         {
-            this.app = app;
+            _app = app;
         }
 
         [HttpGet]
@@ -33,7 +33,7 @@ namespace Restaurante.Servicos.Api.Controllers
         {
             try
             {
-                var result = app.SelecionarTodos();
+                var result = _app.SelecionarTodos();
                 return new OkObjectResult(result);
             }
             catch (Exception ex)
@@ -50,14 +50,14 @@ namespace Restaurante.Servicos.Api.Controllers
             try
             {
 
-                var result = app.SelecionarPorId(id);
+                var result = _app.SelecionarPorId(id);
 
                 if (result == null)
                 {
                     return NotFound();
                 }
 
-                return new OkObjectResult(app.SelecionarPorId(id));
+                return new OkObjectResult(_app.SelecionarPorId(id));
             }
             catch (Exception ex)
             {
@@ -71,7 +71,7 @@ namespace Restaurante.Servicos.Api.Controllers
         {
             try
             {
-                int id = app.Incluir(dado);
+                int id = _app.Incluir(dado);
                 return CreatedAtAction(nameof(Incluir), new { Id = id }, dado);
 
                 /*
@@ -98,7 +98,7 @@ namespace Restaurante.Servicos.Api.Controllers
             try
             {
                 
-                app.Alterar(dado);
+                _app.Alterar(dado);
                 return new NoContentResult();
                 
             }
@@ -119,7 +119,7 @@ namespace Restaurante.Servicos.Api.Controllers
         {
             try
             {
-                app.Excluir(id);
+                _app.Excluir(id);
                 return new NoContentResult();
             }
             catch (EntityNotFoundException)
@@ -138,7 +138,7 @@ namespace Restaurante.Servicos.Api.Controllers
         {
             try
             {
-                app.Excluir(dado);
+                _app.Excluir(dado);
                 return new NoContentResult();
             }
             catch (EntityNotFoundException)

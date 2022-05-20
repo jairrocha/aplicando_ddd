@@ -13,10 +13,18 @@ namespace Restaurante.Aplicacao.Servicos
 {
     public class PratoApp : ServicoAppBase<Prato, PratoDTO>, IPratoApp
     {
+
+        private readonly IPratoServico _servico;
+
         public PratoApp(IMapper iMaper, IPratoServico servico)
             :base(servico, iMaper)
         {
-            
+            _servico = servico;
+        }
+
+        public IEnumerable<PratoDTO> SelecionarPorNome(string nome)
+        {
+            return _iMapper.Map<IEnumerable<PratoDTO>>( _servico.SelecionarPorNome(nome));
         }
     }
 }

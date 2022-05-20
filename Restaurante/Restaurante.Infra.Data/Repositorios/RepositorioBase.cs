@@ -3,35 +3,32 @@ using Restaurante.Dominio.Entidades;
 using Restaurante.Dominio.Interfaces.Repositorios;
 using Restaurante.Infra.Data.Contextos;
 using Restaurante.Infra.Data.Exceptions;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Restaurante.Infra.Data.Repositorios
 {
     public class RepositorioBase<TEntidade> : IRepositorioBase<TEntidade>
         where TEntidade : EntidadeBase
     {
-        private readonly Contexto contexto;
+        protected readonly Contexto _contexto;
 
         public RepositorioBase(Contexto contexto) : base()
         {
-            this.contexto = contexto;
+            _contexto = contexto;
         }
 
         public void Alterar(TEntidade entidade)
         {
 
-            if (contexto.Set<TEntidade>().Attach(entidade).GetDatabaseValues() == null)
+            if (_contexto.Set<TEntidade>().Attach(entidade).GetDatabaseValues() == null)
             {
                 throw new EntityNotFoundException();
             }
 
-            contexto.InitTransacao();
-            contexto.Entry(entidade).State = EntityState.Modified;
-            contexto.SendChanges();
+            _contexto.InitTransacao();
+            _contexto.Entry(entidade).State = EntityState.Modified;
+            _contexto.SendChanges();
 
         }
 
@@ -43,9 +40,9 @@ namespace Restaurante.Infra.Data.Repositorios
                 throw new EntityNotFoundException();
             }
             
-            contexto.InitTransacao();
-            contexto.Set<TEntidade>().Remove(entidade);
-            contexto.SendChanges();
+            _contexto.InitTransacao();
+            _contexto.Set<TEntidade>().Remove(entidade);
+            _contexto.SendChanges();
 
         }
 
@@ -57,28 +54,28 @@ namespace Restaurante.Infra.Data.Repositorios
                 throw new EntityNotFoundException();
             }
 
-            contexto.InitTransacao();
-            contexto.Set<TEntidade>().Remove(entidade);
-            contexto.SendChanges();
+            _contexto.InitTransacao();
+            _contexto.Set<TEntidade>().Remove(entidade);
+            _contexto.SendChanges();
 
         }
 
         public int Incluir(TEntidade entidade)
         {
-            contexto.InitTransacao();
-            contexto.Set<TEntidade>().Add(entidade);
-            contexto.SendChanges();
+            _contexto.InitTransacao();
+            _contexto.Set<TEntidade>().Add(entidade);
+            _contexto.SendChanges();
             return entidade.Id;
         }
 
         public TEntidade SelecionarPorId(int Id)
         {
-            return contexto.Set<TEntidade>().Find(Id);
+            return _contexto.Set<TEntidade>().Find(Id);
         }
 
         public IEnumerable<TEntidade> SelecionarTodos()
         {
-            return contexto.Set<TEntidade>().ToList();
+            return _contexto.Set<TEntidade>().ToList();
         }
     }
 }

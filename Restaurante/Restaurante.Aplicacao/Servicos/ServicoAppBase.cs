@@ -15,43 +15,43 @@ namespace Restaurante.Aplicacao.Servicos
         where TEntidade: EntidadeBase
         where TEntidadeDTO : DTOBase
     {
-        protected readonly IServicoBase<TEntidade> servico;
-        protected readonly IMapper iMapper;
+        private readonly IServicoBase<TEntidade> _servico;
+        protected readonly IMapper _iMapper;
 
         public ServicoAppBase(IServicoBase<TEntidade> servico, IMapper iMapper)
         {
-            this.servico = servico;
-            this.iMapper = iMapper;
+            _servico = servico;
+            _iMapper = iMapper;
         }
 
         public int Incluir(TEntidadeDTO entidade)
         {
-            return servico.Incluir(iMapper.Map<TEntidade>(entidade));
+            return _servico.Incluir(_iMapper.Map<TEntidade>(entidade));
         }
 
         public void Excluir(int Id)
         {
-            servico.Excluir(Id);
+            _servico.Excluir(Id);
         }
 
         public void Excluir(TEntidadeDTO entidade)
         {
-            servico.Excluir(iMapper.Map<TEntidade>(entidade));
+            _servico.Excluir(_iMapper.Map<TEntidade>(entidade));
         }
 
         public void Alterar(TEntidadeDTO entidade)
         {
-            servico.Alterar(iMapper.Map<TEntidade>(entidade));
+            _servico.Alterar(_iMapper.Map<TEntidade>(entidade));
         }
 
         public TEntidadeDTO SelecionarPorId(int Id)
         {
-            return iMapper.Map<TEntidadeDTO>(servico.SelecionarPorId(Id));
+            return _iMapper.Map<TEntidadeDTO>(_servico.SelecionarPorId(Id));
         }
 
         public IEnumerable<TEntidadeDTO> SelecionarTodos()
         {
-            return iMapper.Map<IEnumerable<TEntidadeDTO>>(servico.SelecionarTodos());
+            return _iMapper.Map<IEnumerable<TEntidadeDTO>>(_servico.SelecionarTodos());
         }
 
         

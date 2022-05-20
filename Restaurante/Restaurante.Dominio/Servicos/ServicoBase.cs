@@ -11,40 +11,40 @@ namespace Restaurante.Dominio.Servicos
 {
     public class ServicoBase<TEntidade> : IServicoBase<TEntidade> where TEntidade : EntidadeBase
     {
-        protected readonly IRepositorioBase<TEntidade> repositorio;
+        private readonly IRepositorioBase<TEntidade> _repositorio;
 
         public ServicoBase(IRepositorioBase<TEntidade> repositorio)
         {
-            this.repositorio = repositorio;
+            this._repositorio = repositorio;
         }
         public void Alterar(TEntidade entidade)
         {
-            repositorio.Alterar(entidade);
+            _repositorio.Alterar(entidade);
         }
 
         public void Excluir(int id)
         {
-            repositorio.Excluir(id);
+            _repositorio.Excluir(id);
         }
 
         public void Excluir(TEntidade entidade)
         {
-            repositorio.Excluir(entidade);
+            _repositorio.Excluir(entidade);
         }
 
         public int Incluir(TEntidade entidade)
         {
-            return repositorio.Incluir(entidade);
+            return _repositorio.Incluir(entidade);
         }
 
         public TEntidade SelecionarPorId(int Id)
         {
-            return repositorio.SelecionarPorId(Id);
+            return _repositorio.SelecionarPorId(Id);
         }
 
         public IEnumerable<TEntidade> SelecionarTodos()
         {
-            return repositorio.SelecionarTodos();
+            return _repositorio.SelecionarTodos();
         }
     }
 }
