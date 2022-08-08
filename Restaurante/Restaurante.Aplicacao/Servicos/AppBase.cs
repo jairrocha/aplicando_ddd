@@ -11,14 +11,14 @@ using System.Threading.Tasks;
 
 namespace Restaurante.Aplicacao.Servicos
 {
-    public class  ServicoAppBase<TEntidade, TEntidadeDTO> : IAppBase<TEntidade, TEntidadeDTO>
+    public class  AppBase<TEntidade, TEntidadeDTO> : IAppBase<TEntidade, TEntidadeDTO>
         where TEntidade: EntidadeBase
         where TEntidadeDTO : DTOBase
     {
         private readonly IServicoBase<TEntidade> _servico;
         protected readonly IMapper _iMapper;
 
-        public ServicoAppBase(IServicoBase<TEntidade> servico, IMapper iMapper)
+        public AppBase(IServicoBase<TEntidade> servico, IMapper iMapper)
         {
             _servico = servico;
             _iMapper = iMapper;

@@ -14,10 +14,25 @@ namespace Restaurante.Infra.Data.Mapeamentos
         public override void Configure(EntityTypeBuilder<Prato> builder)
         {
             base.Configure(builder);
-            builder.ToTable("Tb_Prato");
+            
+            builder
+                .ToTable("TB_PRATO");
 
-            builder.Property(c => c.Nome).IsRequired().HasColumnName("Nome").HasMaxLength(100);
-            builder.Property(c => c.Preco).IsRequired().HasColumnName("Preco");
+            builder
+                .Property(p => p.Id)
+                .IsRequired()
+                .HasColumnName("ID_PRATO");
+            
+            builder.Property(p => p.Nome)
+                .IsRequired()
+                .HasColumnName("NOME")
+                .HasMaxLength(100);
+            
+            builder
+                .Property(p => p.Preco)
+                .IsRequired()
+                .HasColumnName("PRECO")
+                .HasColumnType("NUMERIC(15,2)");
         }
     }
 }

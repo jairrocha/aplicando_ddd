@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace Restaurante.Aplicacao.Servicos
 {
-    public class PratoApp : ServicoAppBase<Prato, PratoDTO>, IPratoApp
+    public class PratoApp : AppBase<Prato, PratoDTO>, IPratoApp
     {
 
         private readonly IPratoServico _servico;

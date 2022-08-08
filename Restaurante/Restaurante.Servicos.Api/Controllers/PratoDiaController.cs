@@ -1,36 +1,48 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Restaurante.Aplicacao.DTO;
+﻿
+using Microsoft.AspNetCore.Mvc;
+using Restaurante.Aplicacao.DTO.PratoDia;
 using Restaurante.Aplicacao.Interfaces;
 using Restaurante.Dominio.Entidades;
 using Restaurante.Infra.Data.Exceptions;
 using System;
-
+using System.Linq;
 
 namespace Restaurante.Servicos.Api.Controllers
 {
-
     [Produces("application/json")]
-    [Route("api/[controller]")]
+    [Route("[controller]")]
     [ApiController]
-    public class ControllerBase<Entidade, EntidadeDTO> : Controller
-        where Entidade : EntidadeBase
-        where EntidadeDTO : DTOBase
+    public class PratoDiaController : Controller
     {
 
-        private readonly IAppBase<Entidade, EntidadeDTO> _app;
+        private readonly IPratoDiaApp _app;
 
-        public ControllerBase(IAppBase<Entidade, EntidadeDTO> app)
+        #region [Construtor]
+        public PratoDiaController(IPratoDiaApp app)
         {
             _app = app;
         }
+        #endregion
+
 
         [HttpGet]
-        [Route("")]
-        public IActionResult Listar()
+        //[Route("")]
+        public IActionResult Listar([FromQuery] int diaDaSemana)
         {
+
             try
             {
                 var result = _app.SelecionarTodos();
+
+
+                if (diaDaSemana > 0 && result != null)
+                {
+                    result = _app.SelecionarTodos().Where(_ => _.Cardapio.CodDia.Equals(diaDaSemana)).ToList();
+
+                    if (result.Count() == 0) { return NotFound(); }
+
+                }
+
                 return new OkObjectResult(result);
             }
             catch (Exception ex)
@@ -39,6 +51,7 @@ namespace Restaurante.Servicos.Api.Controllers
                 return BadRequest(ex.Message);
             }
         }
+
 
         [HttpGet]
         [Route("{id}")]
@@ -59,27 +72,17 @@ namespace Restaurante.Servicos.Api.Controllers
             catch (Exception ex)
             {
                 return BadRequest(ex.Message);
-               
+
             }
         }
 
         [HttpPost]
-        public IActionResult Incluir([FromBody] EntidadeDTO dado)
+        public IActionResult Incluir([FromBody] CreatePratoDiaDTO dado)
         {
             try
             {
                 int id = _app.Incluir(dado);
                 return CreatedAtAction(nameof(Incluir), new { Id = id }, dado);
-
-                /*
-                 * Utilize na controller o atributo: [ApiController] evitar o If abaixo.
-                 * ref.:https://docs.microsoft.com/en-us/aspnet/core/web-api/?view=aspnetcore-2.2#annotation-with-apicontroller-attribute
-                 * 
-                if (ModelState.IsValid)
-                    return CreatedAtAction(nameof(Incluir), new { Id = id }, dado);
-                else
-                    return BadRequest(ModelState);
-                */
 
             }
             catch (Exception ex)
@@ -90,34 +93,14 @@ namespace Restaurante.Servicos.Api.Controllers
         }
 
         [HttpPut]
-        public IActionResult Alterar([FromBody] EntidadeDTO dado)
+        public IActionResult Alterar([FromBody] AlterPratoDiaDTO dado)
         {
             try
             {
-                
+
                 _app.Alterar(dado);
                 return new NoContentResult();
-                
-            }
-            catch(EntityNotFoundException)
-            {
-                return NotFound();
-            }
-            catch (Exception ex)
-            {
-          
-                return BadRequest(ex.Message);
-            }
-        }
 
-        [HttpDelete]
-        [Route("{id}")]
-        public IActionResult Excluir(int id)
-        {
-            try
-            {
-                _app.Excluir(id);
-                return new NoContentResult();
             }
             catch (EntityNotFoundException)
             {
@@ -131,11 +114,12 @@ namespace Restaurante.Servicos.Api.Controllers
         }
 
         [HttpDelete]
-        public IActionResult Excluir([FromBody] EntidadeDTO dado)
+        [Route("{id}")]
+        public IActionResult Excluir(int id)
         {
             try
             {
-                _app.Excluir(dado);
+                _app.Excluir(id);
                 return new NoContentResult();
             }
             catch (EntityNotFoundException)

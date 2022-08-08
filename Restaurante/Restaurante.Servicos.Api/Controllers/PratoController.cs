@@ -7,8 +7,8 @@ using System.Linq;
 
 namespace Restaurante.Servicos.Api.Controllers
 {
-    [Route("[controller]")]
     [ApiController]
+    [Route("[controller]")]
     public class PratoController : ControllerBase<Prato, PratoDTO>
     {
 

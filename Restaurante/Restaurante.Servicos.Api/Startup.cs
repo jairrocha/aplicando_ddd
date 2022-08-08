@@ -10,6 +10,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
 using Restaurante.Aplicacao;
+using Restaurante.Aplicacao.Profiles;
 using Restaurante.Infra.Data.Contextos;
 using Restaurante.Infra.IoC;
 using System;
@@ -31,15 +32,19 @@ namespace Restaurante.Servicos.Api
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContext<Contexto>(o =>
-                   o.UseSqlServer(Configuration.GetConnectionString("Default")));
+            services.AddDbContext<Contexto>(o => o.UseLazyLoadingProxies()
+                .UseSqlServer(Configuration.GetConnectionString("Default")));
 
             services.AddControllers();
 
          
             InjetorDependencias.Registrar(services);
-            services.AddAutoMapper(x => x.AddProfile(new MappingEntidade()));
-            
+            services.AddAutoMapper(x => x.AddProfile(new PratoDiaProfile()));
+            services.AddAutoMapper(x => x.AddProfile(new CardapioProfile()));
+            services.AddAutoMapper(x => x.AddProfile(new PratoProfile()));
+
+
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

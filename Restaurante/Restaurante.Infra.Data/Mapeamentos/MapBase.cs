@@ -15,7 +15,7 @@ namespace Restaurante.Infra.Data.Mapeamentos
         public virtual void Configure(EntityTypeBuilder<T> builder)
         {
             builder.HasKey(c => c.Id);
-            builder.Property(c => c.Id).IsRequired().HasColumnName("Id");
+            
         }
     }
 }

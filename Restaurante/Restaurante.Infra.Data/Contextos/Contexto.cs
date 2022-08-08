@@ -3,33 +3,26 @@ using Microsoft.EntityFrameworkCore.Storage;
 using Restaurante.Dominio.Entidades;
 using Restaurante.Infra.Data.Mapeamentos;
 using System;
-using System.Collections.Generic;
-using System.Configuration;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Restaurante.Infra.Data.Contextos
 {
     public class Contexto : DbContext
     {
+        public DbSet<Cardapio> Cardapios { get; set; }
+        public DbSet<PratoDia> DiasDaSemana { get; set; }
         public DbSet<Prato> Pratos { get; set; }
+
         public IDbContextTransaction Transaction { get; set; }
 
         public Contexto(DbContextOptions<Contexto> options)
             : base(options)
         {
 
-
-            if (Database.GetPendingMigrations().Count() > 0)
-            {
-                Database.Migrate();
-            }
-        }
-
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            
+            //if (Database.GetPendingMigrations().Count() > 0)
+            //{
+            //    Database.Migrate();
+            //}
         }
 
         public IDbContextTransaction InitTransacao()
@@ -81,8 +74,12 @@ namespace Restaurante.Infra.Data.Contextos
         {
             base.OnModelCreating(modelBuilder);
 
+
             modelBuilder.ApplyConfiguration(new PratoMap());
+            modelBuilder.ApplyConfiguration(new CardapioMap());
+            modelBuilder.ApplyConfiguration(new PratoDiaMap());
         }
+
 
     }
 }

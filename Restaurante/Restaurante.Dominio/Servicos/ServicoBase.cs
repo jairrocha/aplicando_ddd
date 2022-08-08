@@ -1,11 +1,7 @@
 ﻿using Restaurante.Dominio.Entidades;
 using Restaurante.Dominio.Interfaces.Repositorios;
 using Restaurante.Dominio.Interfaces.Servicos;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Restaurante.Dominio.Servicos
 {
@@ -15,7 +11,7 @@ namespace Restaurante.Dominio.Servicos
 
         public ServicoBase(IRepositorioBase<TEntidade> repositorio)
         {
-            this._repositorio = repositorio;
+            _repositorio = repositorio;
         }
         public void Alterar(TEntidade entidade)
         {
